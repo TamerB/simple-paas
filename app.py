@@ -33,14 +33,14 @@ def JavaBuild():
 		</hudson.tasks.Shell>\
 		</builders>'
 
-	git = 'https://github.com/TamerB/play-demo'
+	#git = 'https://github.com/TamerB/play-demo'
 	git_name = '*/master'
 
 	scm = '<scm class="hudson.plugins.git.GitSCM" plugin="git@2.4.4">\
 		<configVersion>2</configVersion>\
 		<userRemoteConfigs>\
 		<hudson.plugins.git.UserRemoteConfig>\
-		<url>' + git + '</url>\
+		<url>' + _git + '</url>\
 		</hudson.plugins.git.UserRemoteConfig>\
 		</userRemoteConfigs>\
 		<branches>\
@@ -76,8 +76,8 @@ def JavaBuild():
 	pName = re.sub("/","-", pName)
 
 	# Login to jenkins
-	server = jenkins.Jenkins('http://localhost:8090', username = 'TamerB', password = 'tamer')
-
+	#server = jenkins.Jenkins('http://localhost:8090', username = 'TamerB', password = 'tamer')
+	server = jenkins.Jenkins('http://ec2-52-90-194-22.compute-1.amazonaws.com/jenkins/', username = 'user', password = 'Wosh2TgPiHmz')
 	#server.delete_job(pName)
 	server.create_job(pName, build)
 	server.build_job(pName)
