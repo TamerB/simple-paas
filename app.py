@@ -17,17 +17,20 @@ def showJavaBuild():
 def JavaBuild():
  
     # read the posted values from the UI
-	#_name = request.form['inputName']
 	_git = request.form['inputRepo'] 
 
+	# Data for config.xml
 	builder = '<builders>\
 		<org.jvnet.hudson.plugins.SbtPluginBuilder plugin="sbt@1.5">\
 		<name>sbt</name>\
 		<jvmFlags></jvmFlags>\
 		<sbtFlags>-Dsbt.log.noformat=true</sbtFlags>\
-		<actions></actions>\
+		<actions>test</actions>\
 		<subdirPath></subdirPath>\
 		</org.jvnet.hudson.plugins.SbtPluginBuilder>\
+		<hudson.tasks.Shell>\
+		<command>./activator debian:packageBin</command>\
+		</hudson.tasks.Shell>\
 		</builders>'
 
 	git = 'https://github.com/TamerB/play-demo'
@@ -68,10 +71,13 @@ def JavaBuild():
 		<buildWrappers/>\
 		</project>"
 
+	# Job Name
 	pName = str(_git[19:-4])
 	pName = re.sub("/","-", pName)
 
+	# Login to jenkins
 	server = jenkins.Jenkins('http://localhost:8090', username = 'TamerB', password = 'tamer')
+
 	#server.delete_job(pName)
 	server.create_job(pName, build)
 	server.build_job(pName)
@@ -83,15 +89,6 @@ def JavaBuild():
 	#view_config = server.get_view_config(_name)
 	#views = server.get_views()
 	#print views
-
-	#if _name and _email and _password:
-	#	return json.dumps({'html':'<span>All fields good !!</span>'})
-	#else:
-	#	return json.dumps({'html':'<span>Enter the required fields</span>'})
-
-#@app.route('/signUp')
-#def signUp():
-    # create user code will be here !!
 
 if __name__ == "__main__":
     app.run()
