@@ -2,7 +2,7 @@
 <html lang="en">
  
 <head>
-    <title>PAAS Prototype</title>
+    <title>{{ job }}</title>
  
  
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -10,7 +10,6 @@
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
  
     <script src="http://getbootstrap.com/assets/js/ie-emulation-modes-warning.js"></script>
-</head>
  
 <body>
  
@@ -32,26 +31,32 @@
                     </li>
                 </ul>
             </nav>
-            <h3 class="text-muted">PAAS Prototype</h3>
+            <h3 class="text-muted">{{ job }}</h3>
         </div>
  
         <div class="jumbotron">
-            <h1>PAAS Prototype</h1>
+            <h1>{{ job }}</h1>
             <p class="lead"></p>
             <p>
             </p>
         </div>
         <div class="container">
-            <ul class=entries>
-  {% for job in jobs %}
-    <li><a href="showJob/{{job.fullname}}"><h2>{{ job.fullname }}</h2></a>
-    <h4>Build Status: </h4>{{ jobStatus[job.fullname] }}
-    <a href="/job/{{job.fullname}}/delete" id="btnBuild" class="btn btn-danger" type="button">Delete Job</a>
+            <a href="/job/{{job}}/delete" id="btnStop" class="btn btn-danger" type="button">Delete Job</a>
+            <a href="/job/{{job}}/delete" id="btnStop" class="btn btn-success" type="button">Deploy Job</a>
+        </div>
+        <br/>
+        <div class="container">
+        <h2>Build Console</h2>
+            {{jobStatus}}
+        <!--<ul class=entries>
+        {% for status in jobStatus %}
+    <li><h2>Build Number {{ status }}: </h2>{{ jobStatus[status] }}<a href="/job/{{job}}/{{status}}/stop" id="btnStop" class="btn btn-danger" type="button">Stop Build</a>
   {% else %}
     <li><em>Unbelievable.  No entries here so far</em>
   {% endfor %}
-  </ul>
+  </ul>-->
         </div>
+ 
         <footer class="footer">
             <p>&copy; Tamer Bahgat 2016</p>
         </footer>
