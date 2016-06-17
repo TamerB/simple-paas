@@ -6,14 +6,14 @@ import sys
 import urllib2
 import time
 import glob
+import requests
 
 from flask import Flask, render_template, request, redirect
 app = Flask(__name__)
 
-#app.secret_key = "my precious"
 
 @app.route("/")
-def main(server):
+def main():
 	server = jenkins.Jenkins('http://localhost:8090', username = 'TamerB', password = 'tamer')
 	jobs = server.get_jobs()
 	jobStatus={}
@@ -285,11 +285,15 @@ def MavenSpringBuild():
 	warArr = glob.glob('/var/lib/jenkins/jobs/' + pName + '/workspace/target/*.war')
 	warFile = re.sub("/","-", warArr[0])
 	print warFile
-	#os.system("echo ay 7aga")
-	ip = str(os.system("curl localhost:6666/subscribe/" + pName + "/" + warFile))
-	print ip
-	return ip
-	#return "Success"
+	print "hi"
+	#ip = os.system("curl localhost:6666/subscribe/" + pName + "/" + warFile)
+	r = requests.get('http://localhost:6666/subscribe/' + pName + '/' + warFile)
+	print r.text
+
+	#with urllib.request.urlopen('localhost:6666/subscribe/" + pName + "/" + warFile') as response: ip = response.read()
+	#x = os.system("curl google.com")
+	#print "bye"
+	return "abc : " + r.text
 
 @app.route('/JavaBuild',methods=['POST'])
 def JavaBuild():
@@ -311,6 +315,8 @@ def JavaBuild():
 	#return redirect('/showJob/' + pName)
 	#return redirect('/showJob/' + pName)
 	#return getLastBuildStatus(pName)
+
+
 
 if __name__ == "__main__":
     app.run()
