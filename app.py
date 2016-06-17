@@ -276,7 +276,7 @@ def stopBuild(pName, bNum):
 def MavenSpringBuild():
 	_git = request.form['inputRepo']
 	pName = str(_git[19:-4])
-	pName = re.sub("/","-",pName)
+	pName = re.sub("/","_",pName)
 
 	server = jenkins.Jenkins('http://localhost:8090', username = 'TamerB', password = 'tamer')
 	server.create_job(pName, mavenXmlGen(pName, _git))
@@ -298,7 +298,7 @@ def JavaBuild():
 
 	# Job Name
 	pName = str(_git[19:-4])
-	pName = re.sub("/","-", pName)
+	pName = re.sub("/","_", pName)
 
 	# Login to jenkins
 	server = jenkins.Jenkins('http://localhost:8090', username = 'TamerB', password = 'tamer')
