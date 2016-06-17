@@ -19,9 +19,9 @@
             url: '/MavenSpringBuild',
             data: $('form').serialize(),
             type: 'POST',
-            success: function(response) {
-                console.log(response);
-                alert("ip = my ip")
+            success: function(result) {
+                console.log(result);
+                alert(result)
             },
             error: function(error) {
                 console.log(error);

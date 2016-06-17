@@ -5,19 +5,46 @@ import json
 import sys
 import urllib2
 import time
-
+import glob
 
 from flask import Flask, render_template, request, redirect
 app = Flask(__name__)
 
+#app.secret_key = "my precious"
+
 @app.route("/")
-def main():
+def main(server):
 	server = jenkins.Jenkins('http://localhost:8090', username = 'TamerB', password = 'tamer')
 	jobs = server.get_jobs()
 	jobStatus={}
 	for j in jobs:
 		jobStatus[j["fullname"]]=getLastBuildStatus(str(j["fullname"]))
 	return render_template('index.html', jobs=jobs, jobStatus = jobStatus)
+
+#@app.route('/login', methods['GET', 'POST'])
+#def login():
+#	error = None
+#	if request.method == 'POST':
+#		try:
+#			server = jenkins.Jenkins('http://localhost:8090', username = 'TamerB', password = 'tamer')
+#			session['logged_in'] = True
+#			return redirct(url_for('home'))
+#		except:
+#			error = 'Invalid credentials. Please try again'
+#			return render_template('login.html', error = error)
+
+
+#@app.route('/logout')
+#def logtou():
+#	session.pop('logged_in', None)
+#	return redirect(url_for('welcome'))
+
+#def server(user, password):
+#	try:
+#		server = jenkins.Jenkins('http://localhost:8090', username = user, password = password)
+#		return redircet('index.html', server = server)
+#	except:
+#		return redircet('login.html', )
 
 @app.route('/showJob/<job>')
 def showJob(job):
@@ -255,8 +282,14 @@ def MavenSpringBuild():
 	server.create_job(pName, mavenXmlGen(pName, _git))
 	server.build_job(pName)
 	getLastBuildStatusContinous(pName)
-	os.system("curl google.com")
-	return "Success"
+	warArr = glob.glob('/var/lib/jenkins/jobs/' + pName + '/workspace/target/*.war')
+	warFile = re.sub("/","-", warArr[0])
+	print warFile
+	#os.system("echo ay 7aga")
+	ip = str(os.system("curl localhost:6666/subscribe/" + pName + "/" + warFile))
+	print ip
+	return ip
+	#return "Success"
 
 @app.route('/JavaBuild',methods=['POST'])
 def JavaBuild():
