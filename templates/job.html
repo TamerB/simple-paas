@@ -3,71 +3,76 @@
  
 <head>
     <title>{{ job }}</title>
- 
- 
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
- 
-    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
- 
-    <script src="http://getbootstrap.com/assets/js/ie-emulation-modes-warning.js"></script>
+
+    <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!--[if lte IE 8]><script src="/static/js/ie/html5shiv.js"></script><![endif]-->
+        <link rel="stylesheet" href="../static/css/main.css" />
+        <!--[if lte IE 8]><link rel="stylesheet" href="../static/css/ie8.css" /><![endif]-->
+        <!--[if lte IE 9]><link rel="stylesheet" href="../static/css/ie9.css" /><![endif]-->
+        </head>
  
 <body>
- 
-    <div class="container">
-        <div class="header">
-            <nav>
-                <ul class="nav nav-pills pull-right">
-                    <li role="presentation">
-                        <div class="dropdown">
-  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-    Build Project
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-    <li><a href="showJavaBuild">Java Project</a></li>
-    <li><a href="/showMavenSpringBuild">Maven Spring Project</a></li>
-  </ul>
-</div>
-                    </li>
+    <!-- Header -->
+            <header id="header" class="skel-layers-fixed">
+                <h1><a href="/">Simple PAAS</a></h1>
+                <a href="#nav">Menu</a>
+            </header>
+
+        <!-- Nav -->
+            <nav id="nav">
+                <ul class="links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="showJavaBuild">Build sbt Java Project</a></li>
+                    <li><a href="showMavenSpringBuild">Build Maven Spring Java Project</a></li>
                 </ul>
             </nav>
-            <h3 class="text-muted">{{ job }}</h3>
-        </div>
- 
-        <div class="jumbotron">
-            <h1>{{ job }}</h1>
-            <p class="lead"></p>
-            <p>
-            </p>
-        </div>
-        <div class="container">
-            <a href="/job/{{job}}/delete" id="btnStop" class="btn btn-danger" type="button">Delete Job</a>
-            <a href="/job/{{job}}/delete" id="btnStop" class="btn btn-success" type="button">Deploy Job</a>
-        </div>
-        <br/>
+
+            <section id="main" class="wrapper">
+                <div class="container">
+
+                    <header class="major special">
+                        <h2>{{job}}</h2>
+                    </header>
+                    <section>
+                        <div class="row">
+                                <div class="6u 12u$(xsmall)">
+                    <ul class="alt">
+                                        <li><h4>Status : </h4>{{s}}</li>
+                                        <li><h4>URL : </h4>{{url}}</li>
+                                    </ul></div>
+
+                <div class="6u 12u$(xsmall)">
+                    <ul class="actions">
+                                <li><a href="/start/{{job}}" class="button special">Start</a></li>
+                                <li><a href="/stop/{{job}}" class="button">Stop</a></li>
+                                <li><a href="/job/{{job}}/delete" class="button alt">Delete</a></li>
+                            </ul>
+                            </div>
+                </div>
+            </section>
+            <br/>
+
         <div class="container">
         <h2>Build Console</h2>
             {{jobStatus}}
-        <!--<ul class=entries>
-        {% for status in jobStatus %}
-    <li><h2>Build Number {{ status }}: </h2>{{ jobStatus[status] }}<a href="/job/{{job}}/{{status}}/stop" id="btnStop" class="btn btn-danger" type="button">Stop Build</a>
-  {% else %}
-    <li><em>Unbelievable.  No entries here so far</em>
-  {% endfor %}
-  </ul>-->
-        </div>
- 
-        <footer class="footer">
-            <p>&copy; Tamer Bahgat 2016</p>
-        </footer>
- 
     </div>
+    </div>
+    </section>
+
+    <!-- Footer -->
+            <footer id="footer">
+                <div class="inner">
+                    <ul class="copyright">
+                        &copy; Tamer Bahgat 2016.
+                    </ul>
+                </div>
+            </footer>
+    <!-- Scripts -->
+            <script src="/static/js/jquery.min.js"></script>
+            <script src="/static/js/skel.min.js"></script>
+            <script src="/static/js/util.js"></script>
+            <!--[if lte IE 8]><script src="/assets/js/ie/respond.min.js"></script><![endif]-->
+            <script src="/static/js/main.js"></script>
 </body>
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-
- <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
-
- <script src="http://getbootstrap.com/assets/js/vendor/holder.min.js"></script>
-
- <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
 </html>

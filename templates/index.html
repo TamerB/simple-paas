@@ -2,67 +2,126 @@
 <html lang="en">
  
 <head>
-    <title>PAAS Prototype</title>
+    <title>Simple PAAS</title>
  
  
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
  
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
  
-    <script src="http://getbootstrap.com/assets/js/ie-emulation-modes-warning.js"></script>
+    <script src="http://getbootstrap.com/assets/js/ie-emulation-modes-warning.js"></script>-->
+    <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!--[if lte IE 8]><script src="../static/js/ie/html5shiv.js"></script><![endif]-->
+        <link rel="stylesheet" href="../static/css/main.css" />
+        <!--[if lte IE 8]><link rel="stylesheet" href="../static/css/ie8.css" /><![endif]-->
+        <!--[if lte IE 9]><link rel="stylesheet" href="../static/css/ie9.css" /><![endif]-->
 </head>
  
-<body>
- 
-    <div class="container">
-        <div class="header">
-            <nav>
-                <ul class="nav nav-pills pull-right">
-                    <li role="presentation">
-                        <div class="dropdown">
-  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-    Build Project
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-    <li><a href="showJavaBuild">Java Project</a></li>
-    <li><a href="showMavenSpringBuild">Maven Spring Project</a></li>
-  </ul>
-</div>
-                    </li>
+<body class='landing'>
+    
+    <!-- Header -->
+            <header id="header" class="alt">
+                <h1><a href="/">Simple PAAS</a></h1>
+                <a href="#nav">Menu</a>
+            </header>
+
+    <!-- Nav -->
+            <nav id="nav">
+                <ul class="links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="showJavaBuild">Build sbt Java Project</a></li>
+                    <li><a href="showMavenSpringBuild">Build Maven Spring Java Project</a></li>
                 </ul>
             </nav>
-            <h3 class="text-muted">PAAS Prototype</h3>
-        </div>
- 
-        <div class="jumbotron">
-            <h1>PAAS Prototype</h1>
-            <p class="lead"></p>
-            <p>
-            </p>
-        </div>
-        <div class="container">
-            <ul class=entries>
-  {% for job in jobs %}
-    <li><a href="showJob/{{job.fullname}}"><h2>{{ job.fullname }}</h2></a>
-    <h4>Build Status: </h4>{{ jobStatus[job.fullname] }}
-    <a href="/job/{{job.fullname}}/delete" id="btnBuild" class="btn btn-danger" type="button">Delete Job</a>
-  {% else %}
-    <li><em>Unbelievable.  No entries here so far</em>
+
+            <!-- Banner -->
+            <section id="banner">
+                <i class="icon fa-diamond"></i>
+                <h2>Simple PAAS</h2>
+                <p>The Beginning</p>
+                <ul class="actions">
+                    <li><a href="#main" class="button big special">Show Projects</a></li>
+                </ul>
+            </section>
+
+            <!-- One -->
+            <section id="one" class="wrapper style1">
+                <div class="inner">
+                    <article class="feature left">
+                        <span class="image"><img src="../static/images/sbtIcon.png" alt="" /></span>
+                        <div class="content">
+                            <h2>Build sbt Java Project</h2>
+                            <p>For Java Projects made using sbt</p>
+                            <ul class="actions">
+                                <li>
+                                    <a href="showJavaBuild" class="button alt">More</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                    <article class="feature right">
+                        <span class="image"><img src="../static/images/Maven-Icono.png" alt="" /></span>
+                        <div class="content">
+                            <h2>Build Maven Spring Project</h2>
+                            <p>For Java Project made using Spring Framework and Maven</p>
+                            <ul class="actions">
+                                <li>
+                                    <a href="showMavenSpringBuild" class="button alt">More</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section id="main" class="wrapper">
+                <div class="container">
+            <!-- Table -->
+                        <section>
+                            <h3>List of Built Projects</h3>
+                            <div class="list">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            {% for job in jobs %}
+                                            <tr>
+                                            <td><a href="showJob/{{job.fullname}}"><h2>{{ job.fullname }}</h2></a></td>
+                                            <td>{{ jobStatus[job.fullname] }}</td>
+    <td><a href="/job/{{job.fullname}}/delete" id="btnBuild" class="btn btn-danger" type="button">Delete Job</a></td>
+                                            </tr>
+
   {% endfor %}
-  </ul>
-        </div>
-        <footer class="footer">
-            <p>&copy; Tamer Bahgat 2016</p>
-        </footer>
- 
-    </div>
+                                    </tbody>
+                                    
+                                </table>
+                            </div>
+                            </section>
+                            </div>
+                            </section>
+
+
+        <!-- Footer -->
+            <footer id="footer">
+                <div class="inner">
+                    <ul class="copyright">
+                        &copy; Tamer Bahgat 2016.
+                    </ul>
+                </div>
+            </footer>
+
+        <!-- Scripts -->
+            <script src="/static/js/jquery.min.js"></script>
+            <script src="/static/js/skel.min.js"></script>
+            <script src="/static/js/util.js"></script>
+            <!--[if lte IE 8]><script src="../assets/js/ie/respond.min.js"></script><![endif]-->
+            <script src="/static/js/main.js"></script>
+
 </body>
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-
- <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
-
- <script src="http://getbootstrap.com/assets/js/vendor/holder.min.js"></script>
-
- <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+ 
 </html>

@@ -52,7 +52,6 @@ def showJob(job):
 	#x=1
 	print "start"
 	#iterator = True
-
 	server = jenkins.Jenkins('http://localhost:8090', username = 'TamerB', password = 'tamer')
 	try:
 		last_build_number = server.get_job_info(job)['lastBuild']['number']
@@ -61,8 +60,20 @@ def showJob(job):
 		last_build_number = 0
 
 	jobStatus = getJobLastBuildStatus(job, last_build_number)
+
+	buildStatus = str(statusJob(job))
+	print " *********************************************************************************************** " 
+	print "buildStatus: " + buildStatus
+	print "************************************************************************************************* " 
+	s = "Nothing"
+	if buildStatus == '0':
+		s = "Running"
+	else:
+		s = "Stoped"
+
+	url = getUrl(job)
 	
-	return render_template('job.html', job = job, jobStatus = jobStatus)
+	return render_template('job.html', job = job, jobStatus = jobStatus, s = s, url = url)
 
 @app.route('/showJavaBuild')
 def showJavaBuild():
@@ -267,6 +278,7 @@ def buildJob(pName):
 def deleteJob(pName):
 	server = jenkins.Jenkins('http://localhost:8090', username = 'TamerB', password = 'tamer')
 	server.delete_job(pName)
+	terminate(pName)
 	return redirect("/")
 
 def stopBuild(pName, bNum):
@@ -286,14 +298,19 @@ def MavenSpringBuild():
 	warFile = re.sub("/","-", warArr[0])
 	print warFile
 	print "hi"
-	#ip = os.system("curl localhost:6666/subscribe/" + pName + "/" + warFile)
-	r = requests.get('http://localhost:6666/subscribe/' + pName + '/' + warFile)
-	print r.text
+	ip = os.system("curl localhost:6666/subscribe/" + pName + "/" + warFile)
+	try:
+		r = requests.get('http://localhost:6666/subscribe/' + pName + '/' + warFile)
+		print r.text
+		return redirect('/showJob/' + pName)
+	except:
+		return redirect('/')
 
 	#with urllib.request.urlopen('localhost:6666/subscribe/" + pName + "/" + warFile') as response: ip = response.read()
-	#x = os.system("curl google.com")
-	#print "bye"
-	return "abc : " + r.text
+
+def getUrl(job):
+	r = requests.get('http://localhost:6666/geturl/' + re.sub("-","_", job))
+	return r.text
 
 @app.route('/JavaBuild',methods=['POST'])
 def JavaBuild():
@@ -304,19 +321,43 @@ def JavaBuild():
 	pName = str(_git[19:-4])
 	pName = re.sub("/","_", pName)
 
-	# Login to jenkins
 	server = jenkins.Jenkins('http://localhost:8090', username = 'TamerB', password = 'tamer')
-	#server = jenkins.Jenkins('http://ec2-52-90-194-22.compute-1.amazonaws.com/jenkins/', username = 'user', password = 'Wosh2TgPiHmz')
 	server.create_job(pName, xmlGen(pName, _git))
 	server.build_job(pName)
-	#print 'done 2'
 	getLastBuildStatusContinous(pName)
-	return "Success"
-	#return redirect('/showJob/' + pName)
-	#return redirect('/showJob/' + pName)
-	#return getLastBuildStatus(pName)
+	warArr = glob.glob('/var/lib/jenkins/jobs/' + pName + '/workspace/target/*.war')
+	warFile = re.sub("/","-", warArr[0])
+	print warFile
+	print "hi"
+	ip = os.system("curl localhost:6666/subscribe/" + pName + "/" + warFile)
+	try:
+		r = requests.get('http://localhost:6666/subscribe/' + pName + '/' + warFile)
+		print r.text
+		return redirect('/showJob/' + pName)
+	except:
+		return redirect('/')
+	
 
+@app.route('/start/<job>')
+def startJob(job):
+	r = requests.get('http://localhost:6666/start/' + job )
+	print r.text
+	return redirect('/showJob/' + job)
 
+@app.route('/stop/<job>')
+def stopJob(job):
+	r = requests.get('http://localhost:6666/stop/' + job)
+	print r.text
+	return redirect('/showJob/' + job)
+
+def statusJob(job):
+	r = requests.get('http://localhost:6666/status/' + re.sub("-","_", job))
+	print "uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"+r.text
+	return r.text
+
+def terminate(job):
+	r = requests.get('http://localhost:6666/terminate/' + re.sub("-","_", job))
+	print r.text
 
 if __name__ == "__main__":
     app.run()
